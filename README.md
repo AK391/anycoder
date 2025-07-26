@@ -1,6 +1,6 @@
 # anycoder
 
-A comprehensive AI coding assistant with document processing, web search, and code generation capabilities.
+An open source vibe coding app with AI-powered assistance, document processing, web search, and code generation capabilities.
 
 ## Features
 
