@@ -465,8 +465,7 @@ def get_inference_client(model_id, provider="auto"):
         provider = "auto"  # Let HuggingFace handle provider selection
     return InferenceClient(
         provider=provider,
-        api_key=HF_TOKEN,
-        bill_to="huggingface"
+        api_key=HF_TOKEN
     )
 
 # Type definitions
@@ -1450,7 +1449,7 @@ This will help me create a better design for you."""
             model=_current_model["id"],
             messages=messages,
             stream=True,
-            max_tokens=20000
+            max_tokens=16000
         )
         content = ""
         for chunk in completion:
