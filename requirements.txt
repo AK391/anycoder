@@ -1,0 +1,12 @@
+git+https://github.com/huggingface/huggingface_hub.git
+gradio[oauth]
+tavily-python
+PyPDF2
+python-docx
+pytesseract
+Pillow
+opencv-python
+requests
+beautifulsoup4
+html2text
+openai
