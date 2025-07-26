@@ -2,6 +2,12 @@
 
 An open source vibe coding app with AI-powered assistance, document processing, web search, and code generation capabilities.
 
+## 🚀 Try Online
+
+**[Try anycoder live on Hugging Face Spaces](https://huggingface.co/spaces/akhaliq/anycoder)**
+
+No installation required! Access the full app directly in your browser.
+
 ## Features
 
 - AI-powered code generation and assistance
