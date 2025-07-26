@@ -24,7 +24,6 @@ from huggingface_hub import InferenceClient
 from tavily import TavilyClient
 from huggingface_hub import HfApi
 import tempfile
-from openai import OpenAI
 
 # Gradio supported languages for syntax highlighting
 GRADIO_SUPPORTED_LANGUAGES = [

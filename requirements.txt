@@ -9,4 +9,3 @@ opencv-python
 requests
 beautifulsoup4
 html2text
-openai

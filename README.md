@@ -60,7 +60,6 @@ Set up your API keys as environment variables (add these to your `.env` file or 
 ```bash
 # Required for AI functionality
 export HUGGINGFACE_TOKEN="your_huggingface_token"
-export OPENAI_API_KEY="your_openai_api_key"
 
 # Required for web search
 export TAVILY_API_KEY="your_tavily_api_key"
