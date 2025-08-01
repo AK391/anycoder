@@ -470,9 +470,7 @@ app.run();
 
 Please read our contributing guidelines before submitting PRs.
 
-## License
-
-MIT License - see LICENSE file for details.`
+`
         };
 
         return {

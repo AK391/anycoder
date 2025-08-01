@@ -155,9 +155,6 @@ Set API keys in the UI settings or as environment variables.
 3. Make changes and test both versions if applicable
 4. Submit pull request
 
-## 📝 License
-
-MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 🔧 Troubleshooting
 
