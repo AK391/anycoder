@@ -1,0 +1,22 @@
+{
+  "name": "anycoder-typescript",
+  "version": "1.0.0",
+  "description": "Minimal TypeScript version of AnyCoder - AI-powered code generator",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "serve": "python -m http.server 8000",
+    "start": "npm run build && npm run serve"
+  },
+  "keywords": ["ai", "code-generation", "typescript", "web-app"],
+  "author": "AnyCoder TypeScript",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  },
+  "dependencies": {
+    "highlight.js": "^11.9.0"
+  }
+}

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnyCoder TypeScript - AI Code Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>AnyCoder</h1>
+                <p>AI Code Generator</p>
+            </div>
+
+            <div class="form-section">
+                <div class="input-group">
+                    <label for="prompt">What would you like to build?</label>
+                    <textarea 
+                        id="prompt" 
+                        placeholder="Describe your application..."
+                        rows="4"
+                    ></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="language">Code Language</label>
+                    <select id="language">
+                        <option value="html">HTML</option>
+                        <option value="typescript">TypeScript</option>
+                        <option value="javascript">JavaScript</option>
+                        <option value="python">Python</option>
+                        <option value="css">CSS</option>
+                        <option value="json">JSON</option>
+                        <option value="markdown">Markdown</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="model">AI Model</label>
+                    <select id="model">
+                        <option value="Qwen/Qwen3-Coder-480B-A35B-Instruct">Qwen3 Coder 480B (Best for Code)</option>
+                        <option value="Qwen/Qwen3-235B-A22B-Instruct-2507">Qwen3 235B (General)</option>
+                        <option value="deepseek-ai/DeepSeek-V3-0324">DeepSeek V3 (Code)</option>
+                        <option value="meta-llama/Llama-3.3-70B-Instruct">Llama 3.3 70B</option>
+                        <option value="mistralai/Mistral-7B-Instruct-v0.3">Mistral 7B (Fast)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="file-upload">Reference File (Optional)</label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="file-upload" accept=".txt,.md,.json,.js,.ts,.html,.css,.py">
+                        <div class="file-upload-button" id="file-upload-button">
+                            <span class="file-upload-icon">📁</span>
+                            <span class="file-upload-text">Choose file or drag & drop</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="website-url">Website URL for Redesign (Optional)</label>
+                    <input type="url" id="website-url" placeholder="https://example.com">
+                </div>
+
+                <div class="button-group">
+                    <button id="generate-btn" class="btn btn-primary">
+                        <span class="btn-text">Generate</span>
+                        <span class="btn-loader" style="display: none;">⏳</span>
+                    </button>
+                    <button id="clear-btn" class="btn btn-secondary">Clear</button>
+                </div>
+
+                <div class="settings-section">
+                    <details>
+                        <summary>API Settings</summary>
+                        <div class="input-group">
+                            <label for="api-key">Hugging Face Token</label>
+                            <input type="password" id="api-key" placeholder="Enter your HF token (optional for free tier)">
+                            <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem; display: block;">
+                                Get your free token at <a href="https://huggingface.co/settings/tokens" target="_blank" style="color: var(--primary-color);">huggingface.co/settings/tokens</a>
+                            </small>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="web-search">
+                            <label for="web-search">Enable Web Search</label>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <h3>Quick Examples</h3>
+                <div class="demo-buttons">
+                    <button class="demo-btn" data-prompt="Create a todo app with add, delete, and mark complete functionality">Todo App</button>
+                    <button class="demo-btn" data-prompt="Build a calculator with basic arithmetic operations">Calculator</button>
+                    <button class="demo-btn" data-prompt="Create a responsive dashboard layout with sidebar navigation">Dashboard</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="code">Code</button>
+                <button class="tab-btn" data-tab="preview">Preview</button>
+                <button class="tab-btn" data-tab="history">History</button>
+            </div>
+
+            <div class="tab-content">
+                <!-- Code Tab -->
+                <div id="code-tab" class="tab-panel active">
+                    <div class="code-header">
+                        <div class="code-actions">
+                            <button id="copy-btn" class="btn btn-small">Copy</button>
+                            <button id="download-btn" class="btn btn-small">Download</button>
+                            <select id="theme-select">
+                                <option value="github-dark">Dark Theme</option>
+                                <option value="github">Light Theme</option>
+                                <option value="monokai">Monokai</option>
+                                <option value="vs2015">VS2015</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="code-container">
+                        <pre><code id="generated-code" class="hljs">// Your generated code will appear here...</code></pre>
+                    </div>
+                </div>
+
+                <!-- Preview Tab -->
+                <div id="preview-tab" class="tab-panel">
+                    <div class="preview-container">
+                        <iframe id="preview-frame" sandbox="allow-scripts allow-same-origin"></iframe>
+                        <div id="preview-placeholder" class="preview-placeholder">
+                            <p>Preview will appear here for HTML content</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Tab -->
+                <div id="history-tab" class="tab-panel">
+                    <div class="history-container">
+                        <div id="history-list">
+                            <p class="empty-state">No history yet. Generate some code to see it here!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Status Toast -->
+    <div id="status-toast" class="toast"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="dist/index.js"></script>
+</body>
+</html>
