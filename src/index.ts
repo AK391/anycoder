@@ -219,8 +219,7 @@ class AnyCoder {
     private async callHuggingFaceRouter(prompt: string, language: string, model: string, apiKey?: string): Promise<AIResponse> {
         // Use Hugging Face's OpenAI-compatible router
         const headers: Record<string, string> = {
-            'Content-Type': 'application/json',
-            'X-HF-Bill-To': 'huggingface'
+            'Content-Type': 'application/json'
         };
 
         // Add authorization if API key is provided
@@ -245,7 +244,7 @@ class AnyCoder {
                 ],
                 max_tokens: 4000,
                 temperature: 0.7,
-                stream: false
+                stream: true
             })
         });
 
@@ -269,10 +268,47 @@ class AnyCoder {
             return this.getMockResponse(prompt, language);
         }
 
-        const data = await response.json();
-        const content = data.choices?.[0]?.message?.content || '';
+        // Handle streaming response
+        const reader = response.body?.getReader();
+        if (!reader) {
+            throw new Error('Failed to get response reader');
+        }
+
+        const decoder = new TextDecoder();
+        let content = '';
+
+        try {
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                const chunk = decoder.decode(value, { stream: true });
+                const lines = chunk.split('\n');
+
+                for (const line of lines) {
+                    if (line.startsWith('data: ')) {
+                        const data = line.slice(6);
+                        if (data === '[DONE]') {
+                            break;
+                        }
+
+                        try {
+                            const parsed = JSON.parse(data);
+                            const deltaContent = parsed.choices?.[0]?.delta?.content;
+                            if (deltaContent) {
+                                content += deltaContent;
+                            }
+                        } catch (e) {
+                            // Ignore JSON parsing errors for malformed chunks
+                        }
+                    }
+                }
+            }
+        } finally {
+            reader.releaseLock();
+        }
+
         const code = this.extractCodeFromResponse(content, language);
-        
         return { code, language };
     }
 
